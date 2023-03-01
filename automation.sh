@@ -16,13 +16,29 @@ fi
 SERVICE_NAME="httpd"
 
 if ! systemctl is-enabled $SERVICE_NAME >/dev/null 2>&1; then
-    # If the service is not enabled, enable it
+   
     systemctl enable $SERVICE_NAME
 fi
 
 if ! systemctl is-active $SERVICE_NAME >/dev/null 2>&1; then
-    # If the service is not running, start it
+   
     systemctl start $SERVICE_NAME
+fi
+
+if [ ! -f /var/www/html/inventory.html ]; then
+  
+    cat > /var/www/html/inventory.html <<EOF
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Archived Logs Inventory</title>
+</head>
+<body>
+	<h1>Archived Logs Inventory</h1>
+	<p>Metadata of the archived logs will be listed here.</p>
+</body>
+</html>
+EOF
 fi
 
 cd /var/log/apache2
